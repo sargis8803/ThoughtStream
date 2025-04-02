@@ -8,11 +8,18 @@ import {
 } from "../controllers/diaryController.js";
 
 const router = express.Router();
+/**
+* @route GET /api/diary
+* @desc Fetch all diary entries
+* @access Public (Authentication will be added in Part 2)
+*/
+router.get("/:id", getEntryById);
 
 router.get("/", getAllEntries);
-router.get("/:id", getEntryById);
+
 router.post("/", createEntry);
 router.put("/:id", updateEntry);
 router.delete("/:id", deleteEntry);
 
 export default router;
+ 

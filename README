@@ -1,0 +1,43 @@
+
+PROJECT OVERVIEW:
+
+This current design is the implementation for the backend of a diary web application. ThoughStream is supposed to be an accessible platform 
+built for users to record events in their life, stored in a remote database using mongodb atlas. 
+
+Setup instructions: 
+
+To test Thoughtstream, the following need to installed in the working directory of the application:
+- npm init -y 
+- npm install express mongoose dotenv cors axios
+- npm install nodemon --save-dev
+
+After packages are installed, simly run "npm start" in the command line to spin up the server
+
+API Usage Guide:
+
+List of endpoints:
+
+GET /api/diary
+
+GET /api/diar/:id
+
+POST /api/diary
+
+DELETE /api/diary/:id
+
+PUT /api/diary/:id
+
+Example request for GET /api/diar/:id, pass the path and port
+Response: diary entry returend given id with 200 OK status
+Response (on failiure): 500 status code since entry was not located
+
+
+REQUIRED ENV VARIABLES:
+- MONGO_URI
+- WEATHER_KEY
+
+KNOWN ISSUES:
+
+Server spinning on port 5000 responds with 403 upon client connection request, this may be due problems with the testing machine
+during implementation, in which case port 4000 worked
+
