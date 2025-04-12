@@ -32,7 +32,7 @@ const diarySchema = new mongoose.Schema(
 /**
  * Create the DiaryEntry model based on the schema
  */
-const DiaryEntry = mongoose.model("DiaryEntry", diarySchema);
+const DiaryEntry = mongoose.model("DiaryEntryTest", diarySchema);
 
 /**
  * Export the DiaryEntry Mongoose model for database operations

@@ -41,3 +41,4 @@ KNOWN ISSUES:
 Server spinning on port 5000 responds with 403 upon client connection request, this may be due problems with the testing machine
 during implementation, in which case port 4000 worked
 
+GitHub link for commit history: https://github.com/sargis8803/ThoughtStream 
