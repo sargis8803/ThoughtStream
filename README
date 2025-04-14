@@ -48,3 +48,19 @@ Given the provided framework from mongoose, within DiaryEntry, the User field is
 ROUTE PROTECTION
 
 Route protection is enforced via ensureAuthenticated() which is a middleware that maintains/processes the authentication status for a given user, allowing them (or denying) access to continued client request. For the defined routes in diaryRoutes.js, ensureAuthenticated() is called as one of the arguments for the route function calls, the functions will continue if authentication is continued/sucessful via ensureAuthentication(). 
+
+LOGOUT ROUTE
+
+The logout feature in this application is implemented using the GET/auth/logout route. When a user accesses this route, the application uses passports req.logout() method to remove the req.user object, effectivly ending the users authentication session. Next, the session is destroyed using req.session.destroy(), which ensures that all associated session data is removed. Then the session cookie is cleared from the client using res.clearCookie(). This garantees that the session will not persist in future requests. Once these steps are completed, the server responds with a message indicating a successful logout.
+
+TESTING STRATEGIES
+
+To test login and protected routes in Postman, we started by completing the login process in the browser. Since Postman cannot follow OAuth redirects, we navigated to http://localhost:5000/auth/google in our browser, triggering the Google OAuth flow. After logging in and granting consent, we were redirected to 
+http://localhost:5000/auth/google/callback, where a session was established and the connect.sid cookie was set.
+
+Next, we accessed the browser’s Developer Tools, went to the "Application" tab, and found the connect.sid cookie under the "Cookies" section for http://localhost:5000. We copied the value of this cookie.
+
+In Postman, we went to the "Cookies" tab (below the Send button), added the connect.sid cookie with the domain set to localhost and the name as connect.sid, then pasted the copied value from the browser. With the session cookie set in Postman, we were able to send requests to protected routes like GET 
+http://localhost:5000/api/diary. If the cookie was valid, we received a successful response.
+
+If the connect.sid cookie was missing, any request to a protected route would return a 401 Unauthorized error, as the server would not recognize the session.
