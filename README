@@ -1,5 +1,7 @@
 OVERVIEW:
 
+Team Members: Sargis and Carlos
+
 The feature goal for ThoughtStream part 2 was to implement oAuth2 using google cloud services for users of the web application. 
 This is to ensure user security and allows only authorized and logged-in users to make/update their own diary entries. Session based
 authentication was implemented for this current version of the project because of how well it interfaces with the backend of the application, especially for testing as the connect.sid cookie value was used in api GET and POST requests. In part 3 of the project, 
