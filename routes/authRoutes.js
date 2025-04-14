@@ -59,7 +59,7 @@ router.get(
 // TODO: Implement the route — router.get("/logout", …)
 // Send a message indicating successful logout
 // Gracefully handle errors in case of logout failure
-router.get("/logout", (req, res, next) => {
+router.get("/logout", (req, res, next) =>{
     req.logout((lgError) => {
         //logging out before destroying the session
       if(lgError){

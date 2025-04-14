@@ -16,6 +16,7 @@ import passport from "passport"; // Authentication framework
 import cookieParser from "cookie-parser";
 // Loads Passport strategy and session serialization logic
 import "./config/passport.js";
+import authRoutes from "./routes/authRoutes.js";
 
 // Load environment variables from .env into process.env
 dotenv.config();
@@ -38,9 +39,7 @@ app.use(cors()); // Allows cross-origin requests (for frontend interaction)
 app.use(cookieParser());
 
 
-// Define API routes
-// All requests to /api/diary are forwarded to diaryRoutes.js
-app.use("/api/diary", diaryRoutes); // Mount routes under /api/diary
+
 
 /**
  * Configures session management using express-session. This middleware
@@ -65,6 +64,8 @@ app.use(
       saveUninitialized: false,
     })
   );
+
+  
   
   // Initializes Passport middleware. This must come after session middleware
   // so Passport can access session data.
@@ -73,6 +74,10 @@ app.use(
   // Enables persistent login sessions with Passport.
   // It integrates with express-session and makes req.user available for authenticated users.
   app.use(passport.session());
+  app.use("/auth", authRoutes);
+  // Define API routes
+// All requests to /api/diary are forwarded to diaryRoutes.js
+app.use("/api/diary", diaryRoutes); // Mount routes under /api/diary
   
 
 

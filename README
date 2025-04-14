@@ -1,44 +1,50 @@
+OVERVIEW:
 
-PROJECT OVERVIEW:
+The feature goal for ThoughtStream part 2 was to implement oAuth2 using google cloud services for users of the web application. 
+This is to ensure user security and allows only authorized and logged-in users to make/update their own diary entries. Session based
+authentication was implemented for this current version of the project because of how well it interfaces with the backend of the application, especially for testing as the connect.sid cookie value was used in api GET and POST requests. In part 3 of the project, 
+JWT-based authentication will be used instead given how it interfaces with React. 
+The new packages used in part 2 from npm are 
+passport: Needed for request authentication and to interface with google.  
+passport-google-oauth2: Specifically using google services for oAuth2, processing google callback url, secret, and client id 
+express-session: Needed to maintain user access via authentciation through handling cookie value (connect.sid)
+cookie-parser: Needed to process/parse cookies from users
+The middleware used in part 2 are
+ensureAuthenticated(): Used to handle authentication status for users for later processing (continue client request or deny it)
+session(): Used to handle and store current user id while authenticated, user data is then available for handling
+cookieParser(): Needed to parse cookies (connect.sid for a given session) between requests
+express.json: Needed to handle/parse inputted JSON files (diary entries)
 
-This current design is the implementation for the backend of a diary web application. ThoughStream is supposed to be an accessible platform 
-built for users to record events in their life, stored in a remote database using mongodb atlas. 
+GOOGLE CLOUD CONSOLE WORKFLOW:
 
-Setup instructions: 
+First go to google cloud console and initialize a project, afterwards go to the credentials sections of the APIs tab to create a client id 
+with type "Web application", provided local running server location and port the redirect URI, the finally include the client id and 
+secret in the .env file for future usage. Then in add relavent google cloud console information to Usage.js, passport.js, and authRoutes.js.
 
-To test Thoughtstream, the following need to installed in the working directory of the application:
-- npm init -y 
-- npm install express mongoose dotenv cors axios
-- npm install nodemon --save-dev
+oAuth2 provides authentication for a given user for third-party applications. Providers like Google handle these authorizations by processing a user's existing account. 
 
-After packages are installed, simly run "npm start" in the command line to spin up the server
+AUTHENTICATION FLOW DESCRIPTION
 
-API Usage Guide:
-
-List of endpoints:
-
-GET /api/diary
-
-GET /api/diar/:id
-
-POST /api/diary
-
-DELETE /api/diary/:id
-
-PUT /api/diary/:id
-
-Example request for GET /api/diar/:id, pass the path and port
-Response: diary entry returend given id with 200 OK status
-Response (on failiure): 500 status code since entry was not located
+When the user clicks the link to login to ThoughtStream, authroutes.js sends an authentication form by Google for the user to login to using their existing Google profile information. Once inputted, the authorization screen will process the inputted information, a callback link is sent where authroutes.js further handles it by providing a login status, and handling existing or creating user entries. A sessions cookie is generated that contains 
 
 
-REQUIRED ENV VARIABLES:
-- MONGO_URI
-- WEATHER_KEY
+ENVIORNMENT VARIABLES
 
-KNOWN ISSUES:
+MONGO_URI
+WEATHER_KEY
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+GOOGLE_CALLBACK_URL
+SESSION_SECRET
+PORT
 
-Server spinning on port 5000 responds with 403 upon client connection request, this may be due problems with the testing machine
-during implementation, in which case port 4000 worked
+MONGOOSE MODEL AND SCHEMA CHANGES
 
-GitHub link for commit history: https://github.com/sargis8803/ThoughtStream 
+DiaryEntry.js: Defines the structure for a valid diary entry given by a user
+User.js: Data is stored about the user after authentication, this data "entry" is generated after user login (successful)
+
+Given the provided framework from mongoose, within DiaryEntry, the User field is set to contain a unique ID of a given user. This id is passed around as reference (using "ref") in User.js. 
+
+ROUTE PROTECTION
+
+Route protection is enforced via ensureAuthenticated() which is a middleware that maintains/processes the authentication status for a given user, allowing them (or denying) access to continued client request. For the defined routes in diaryRoutes.js, ensureAuthenticated() is called as one of the arguments for the route function calls, the functions will continue if authentication is continued/sucessful via ensureAuthentication(). 

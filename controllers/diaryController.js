@@ -10,8 +10,7 @@ import { openWeatherData } from "./weatherController.js";
 export const getAllEntries = async (req, res) => {
   try {
       const { search, tag, location } = req.query;
-      let filter = {}; // No authentication in Part 1, so no user filter is applied
-
+      let filter = {user: req.user._id};//updated here
       // Search filter (Matches title or content)
       if (search) {
           filter.$or = [
@@ -50,6 +49,9 @@ export const getEntryById = async (req, res) => {
       if (!entry) {
           return res.status(404).json({ message: "Diary entry not found" });
       }
+      if(entry.user.toString() !== req.user._id.toString()){
+        return res.status(403).json({message: "Forbidden"});
+      }
       res.status(200).json(entry);
   } catch (error) {
       res.status(500).json({ message: "Server Error: Unable to retrieve diary entry" });
@@ -65,7 +67,7 @@ export const createEntry = async (req, res) => {
       const weatherData = location ? await openWeatherData(location) : null;
 
       const newEntry = new DiaryEntry({
-          user: req.user.id || null, // Authentication is added in Part 2
+          user: req.user._id, // Authentication is added in Part 2
           title,
           content,
           reflection,
@@ -100,6 +102,9 @@ export const updateEntry = async (req, res) => {
       if (!entry){
         return res.status(404).json({ message: "No entry" });
       } 
+      if(entry.user.toString() !== req.user._id.toString()){
+        return res.status(403).json({message: "Forbidden"});
+      }
       //after checking for the existence of the entry, updating req.body values here:
       if(title) {
         entry.title = title;
@@ -143,6 +148,10 @@ export const updateEntry = async (req, res) => {
   
       if(!entry){
         return res.status(404).json({ message: "No entry (404)" });
+      }
+
+      if(entry.user.toString() !== req.user._id.toString()){
+        return res.status(403).json({message: "Forbidden"});
       }
   
       res.status(200).json({message: "Deleted entry"});//OK status
