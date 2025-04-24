@@ -3,6 +3,8 @@
 
 import express from "express";
 import passport from "passport";
+import { handleGoogleLogin } from "../controllers/authController.js";
+
 
 // Create a new Express router instance
 const router = express.Router();
@@ -76,6 +78,8 @@ router.get("/logout", (req, res, next) =>{
     });
   }
   );
+
+router.post("/google", handleGoogleLogin); // POST /api/auth/google
   
 
 /**

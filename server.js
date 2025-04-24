@@ -9,13 +9,7 @@ import express from "express"; // Web framework for Node.js
 import dotenv from "dotenv"; // Loads environment variables from .env file
 import cors from "cors"; // Enables Cross-Origin Resource Sharing
 import connectDB from "./config/db.js"; // Database connection function
-import diaryRoutes from "./routes/diaryRoutes.js"; // API routes for app
-import session from "express-session"; // Middleware to manage sessions
-import passport from "passport"; // Authentication framework
-// Parses cookies from incoming HTTP requests
-import cookieParser from "cookie-parser";
-// Loads Passport strategy and session serialization logic
-import "./config/passport.js";
+import diaryRoutes from "./routes/diaryRoutes.js"; // API routes for app;
 import authRoutes from "./routes/authRoutes.js";
 
 // Load environment variables from .env into process.env
@@ -36,7 +30,7 @@ app.use(express.json()); // Parses JSON request bodies
 app.use(cors()); // Allows cross-origin requests (for frontend interaction)
 // Parses cookies attached to incoming requests.
 // Required by express-session to read the session ID from the cookie.
-app.use(cookieParser());
+
 
 
 
@@ -57,23 +51,9 @@ app.use(cookieParser());
  * openssl rand -hex 32
  * Store the 64-char hex string in your .env file as SESSION_SECRET.
  */
-app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-    })
-  );
 
-  
-  
-  // Initializes Passport middleware. This must come after session middleware
-  // so Passport can access session data.
-  app.use(passport.initialize());
-  
-  // Enables persistent login sessions with Passport.
-  // It integrates with express-session and makes req.user available for authenticated users.
-  app.use(passport.session());
+
+ 
   app.use("/auth", authRoutes);
   // Define API routes
 // All requests to /api/diary are forwarded to diaryRoutes.js
