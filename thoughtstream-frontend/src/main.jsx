@@ -11,7 +11,8 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { AuthProvider } from "./context/AuthContext";
+import AuthProvider from "./context/AuthContext";
+import React from 'react';
 // Select the root DOM node from index.html (must match <div id="root">)
 const rootElement = document.getElementById("root");
 // Create a root rendering context (React 18+ API)
