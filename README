@@ -1,4 +1,18 @@
+Git commit history: https://github.com/sargis8803/ThoughtStream/commits/master/ 
+
+The following need to installed in the working directory of the application:
+- npm init -y 
+- npm install express mongoose dotenv cors axios
+- npm install nodemon --save-dev
+- npm install passport passport-google-oauth20 express-session cookie-parser
+
+After packages are installed, simlpy run "npm start" in the command line to spin up the server
+
+
+
 OVERVIEW:
+
+Team Members: Sargis and Carlos
 
 The feature goal for ThoughtStream part 2 was to implement oAuth2 using google cloud services for users of the web application. 
 This is to ensure user security and allows only authorized and logged-in users to make/update their own diary entries. Session based
@@ -7,7 +21,7 @@ JWT-based authentication will be used instead given how it interfaces with React
 The new packages used in part 2 from npm are 
 passport: Needed for request authentication and to interface with google.  
 passport-google-oauth2: Specifically using google services for oAuth2, processing google callback url, secret, and client id 
-express-session: Needed to maintain user access via authentciation through handling cookie value (connect.sid)
+express-session: Needed to maintain user access via authentication through handling cookie value (connect.sid)
 cookie-parser: Needed to process/parse cookies from users
 The middleware used in part 2 are
 ensureAuthenticated(): Used to handle authentication status for users for later processing (continue client request or deny it)
@@ -19,7 +33,7 @@ GOOGLE CLOUD CONSOLE WORKFLOW:
 
 First go to google cloud console and initialize a project, afterwards go to the credentials sections of the APIs tab to create a client id 
 with type "Web application", provided local running server location and port the redirect URI, the finally include the client id and 
-secret in the .env file for future usage. Then in add relavent google cloud console information to Usage.js, passport.js, and authRoutes.js.
+secret in the .env file for future usage. Then in add relevant google cloud console information to Usage.js, passport.js, and authRoutes.js.
 
 oAuth2 provides authentication for a given user for third-party applications. Providers like Google handle these authorizations by processing a user's existing account. 
 
@@ -47,4 +61,20 @@ Given the provided framework from mongoose, within DiaryEntry, the User field is
 
 ROUTE PROTECTION
 
-Route protection is enforced via ensureAuthenticated() which is a middleware that maintains/processes the authentication status for a given user, allowing them (or denying) access to continued client request. For the defined routes in diaryRoutes.js, ensureAuthenticated() is called as one of the arguments for the route function calls, the functions will continue if authentication is continued/sucessful via ensureAuthentication(). 
+Route protection is enforced via ensureAuthenticated() which is a middleware that maintains/processes the authentication status for a given user, allowing them (or denying) access to continued client request. For the defined routes in diaryRoutes.js, ensureAuthenticated() is called as one of the arguments for the route function calls, the functions will continue if authentication is continued/successful via ensureAuthentication(). 
+
+LOGOUT ROUTE
+
+The logout feature in this application is implemented using the GET/auth/logout route. When a user accesses this route, the application uses passports req.logout() method to remove the req.user object, effectively ending the users authentication session. Next, the session is destroyed using req.session.destroy(), which ensures that all associated session data is removed. Then the session cookie is cleared from the client using res.clearCookie(). This guarantees that the session will not persist in future requests. Once these steps are completed, the server responds with a message indicating a successful logout.
+
+TESTING STRATEGIES
+
+To test login and protected routes in Postman, we started by completing the login process in the browser. Since Postman cannot follow OAuth redirects, we navigated to http://localhost:5000/auth/google in our browser, triggering the Google OAuth flow. After logging in and granting consent, we were redirected to 
+http://localhost:5000/auth/google/callback, where a session was established and the connect.sid cookie was set.
+
+Next, we accessed the browser’s Developer Tools, went to the "Application" tab, and found the connect.sid cookie under the "Cookies" section for http://localhost:5000. We copied the value of this cookie.
+
+In Postman, we went to the "Cookies" tab (below the Send button), added the connect.sid cookie with the domain set to localhost and the name as connect.sid, then pasted the copied value from the browser. With the session cookie set in Postman, we were able to send requests to protected routes like GET 
+http://localhost:5000/api/diary. If the cookie was valid, we received a successful response.
+
+If the connect.sid cookie was missing, any request to a protected route would return a 401 Unauthorized error, as the server would not recognize the session.
