@@ -80,7 +80,7 @@ export const handleGoogleLogin = async (req, res) => {
          */
         const token = jwt.sign(
             {
-                userId: user._id, // Required to identify resource ownership
+                _id: user._id, // Required to identify resource ownership
                 name: user.name,  // Optional user display info for frontend
                 email: user.email
             },
