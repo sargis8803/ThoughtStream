@@ -30,10 +30,12 @@ const { login } = useContext(AuthContext);
 */
 const handleSuccess = async (credentialResponse) => {
 try {
+    console.log("Login Success, credentialResponse:", credentialResponse);
 // Extract the Google-issued ID token (JWT) from the login response
 const credential = credentialResponse.credential;
 // Send the ID token to the backend to verify and exchange for an app-issued JWT
 const response = await api.post("/api/auth/google", { credential });
+console.log("Backend login response:", response.data);
 /**
 * This login() call supports stateless authentication using JWT:
 * - Stores the JWT in localStorage to persist login across page reloads

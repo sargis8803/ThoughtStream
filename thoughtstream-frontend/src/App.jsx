@@ -1,16 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Login from './pages/Login'; 
-import { Routes, Route } from "react-router-dom";
+import { useContext } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthContext } from "./context/AuthContext";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import './App.css';;
 
 function App() {
+  const { isAuthenticated } = useContext(AuthContext);
+  console.log("Is Authenticated?", isAuthenticated);
+
   return (
     <Routes>
-      {/* Show ONLY the login page for now */}
-      <Route path="/" element={<Login />} />
-      <Route path="/login" element={<Login />} />
+      
+      <Route 
+        path="/" 
+        element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} 
+      />
+      <Route 
+        path="/login" 
+        element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} 
+      />
+      <Route 
+        path="/dashboard" 
+        element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
+      />
     </Routes>
   );
 }
