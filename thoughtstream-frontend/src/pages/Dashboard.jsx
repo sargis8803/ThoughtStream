@@ -17,9 +17,8 @@ function Dashboard() {
       </header>
 
       <main className="dashboard-main">
-        <p>WeatherWidget will go here </p>
-        <p>NewEntryForm will go here </p>
-        <p>DiaryList will go here </p>
+        <section id="text-entry">New entry form goes here</section>
+        <section id="old-entries">old enties list goes here</section>
       </main>
     </div>
   );
