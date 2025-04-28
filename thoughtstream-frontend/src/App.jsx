@@ -17,7 +17,7 @@ function App() {
         element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} 
       />
       <Route 
-        path="/login" 
+        path="/login" //route defined here, can test privateroute for auth verification
         element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} 
       />
       <Route 
