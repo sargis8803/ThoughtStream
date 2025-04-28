@@ -52,6 +52,7 @@ setUser(JSON.parse(storedUser)); // Parse user string and set user state
 */
 
 const login = (jwt, userInfo) => {
+    console.log("Saving JWT and user info:", jwt, userInfo);
 localStorage.setItem("jwt", jwt); // Save token persistently
 localStorage.setItem("user", JSON.stringify(userInfo)); // Save user as a string
 setToken(jwt); // Update state

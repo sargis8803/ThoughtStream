@@ -30,6 +30,8 @@ baseURL: import.meta.env.VITE_API_BASE_URL,
 * without repeating code.
 */
 api.interceptors.request.use((config) => {
+// Equivalent to: const token = localStorage.getItem("jwt")
+// Retrieves the JWT stored after login to authenticate outgoing API requests
 const token = getAuthToken();
 if (token) {
 // Attach the token to the Authorization header if it exists

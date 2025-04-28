@@ -1,4 +1,6 @@
 import DiaryEntry from "../models/DiaryEntry.js";
+import jwt from "jsonwebtoken";
+
 
 import { openWeatherData } from "./weatherController.js";
 
@@ -61,25 +63,39 @@ export const getEntryById = async (req, res) => {
 
 export const createEntry = async (req, res) => {
   try {
-      const { title, content, reflection, tags, location } = req.body;
+    const authHeader = req.headers.authorization;
 
-      // Fetch weather data if location is provided
-      const weatherData = location ? await openWeatherData(location) : null;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Not authorized, no token" });
+    }
 
-      const newEntry = new DiaryEntry({
-          user: req.user._id, // Authentication is added in Part 2
-          title,
-          content,
-          reflection,
-          tags,
-          location,
-          weather: weatherData
-      });
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      await newEntry.save();
-      res.status(201).json(newEntry);
+    console.log("Decoded token:", decoded);
+
+    const userId = decoded.userId; 
+
+    const { title, content, reflection, tags, location } = req.body;
+
+    const weatherData = location ? await openWeatherData(location) : null;
+
+    const newEntry = new DiaryEntry({
+      user: userId,  
+      title,
+      content,
+      reflection,
+      tags,
+      location,
+      weather: weatherData
+    });
+
+    await newEntry.save();
+    res.status(201).json(newEntry);
+
   } catch (error) {
-      res.status(400).json({ message: error.message });
+    console.error(error);
+    res.status(400).json({ message: error.message });
   }
 };
 
