@@ -80,7 +80,7 @@ export const handleGoogleLogin = async (req, res) => {
          */
         const token = jwt.sign(
             {
-                userId: user._id, // Required to identify resource ownership
+                _id: user._id, // Required to identify resource ownership
                 name: user.name,  // Optional user display info for frontend
                 email: user.email
             },
@@ -96,7 +96,7 @@ export const handleGoogleLogin = async (req, res) => {
          * The frontend will store this token in localStorage and send it with every API request
          */
         res.json({
-            jwt,
+            token,
             user: { name, email, picture }
         });
     } catch (err) {
