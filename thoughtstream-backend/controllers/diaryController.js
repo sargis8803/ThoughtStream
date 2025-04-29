@@ -63,13 +63,28 @@ export const getEntryById = async (req, res) => {
 
 export const createEntry = async (req, res) => {
   try {
-    //removed old jwt decoding since that's handled in the middleware
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Not authorized, no token" });
+    }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    console.log("Decoded token:", decoded);
+
+    const userId = decoded._id; 
+
     const { title, content, reflection, tags, location } = req.body;
+    console.log("Request Body:", req.body);
+    console.log("Creating entry for user:", userId);
 
     const weatherData = location ? await openWeatherData(location) : null;
 
     const newEntry = new DiaryEntry({
-      user: req.user.userId,  
+      user: userId,  
       title,
       content,
       reflection,

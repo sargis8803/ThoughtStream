@@ -7,7 +7,7 @@ body{
   text-align: center;
 }
 
-
+ 
 
 .dashboard-header {
   display: flex;
@@ -43,7 +43,7 @@ body{
 
 input, textarea {
   width: 95%;
-  padding: 15px;
+  padding: 5px;
   font-size: 16px;
   font-family: 'Segoe UI', system-ui, sans-serif;
   line-height: 1.5;
@@ -62,7 +62,7 @@ input:focus, textarea:focus {
 }
 
 textarea {
-  min-height: 300px;   /* Minimum height */
+  min-height: 20px;   /* Minimum height */
   resize: vertical;    /* Allows vertical resizing only */
   line-height: 1.6;    /* More breathing room between lines */
 }
