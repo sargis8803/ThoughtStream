@@ -74,9 +74,11 @@ export const createEntry = async (req, res) => {
 
     console.log("Decoded token:", decoded);
 
-    const userId = decoded.userId; 
+    const userId = decoded._id; 
 
     const { title, content, reflection, tags, location } = req.body;
+    console.log("Request Body:", req.body);
+    console.log("Creating entry for user:", userId);
 
     const weatherData = location ? await openWeatherData(location) : null;
 
