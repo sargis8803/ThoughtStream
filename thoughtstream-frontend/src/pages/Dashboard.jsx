@@ -2,6 +2,8 @@
 
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import DiaryList from "../components/DiaryList";
+import Header from "../components/Header";
 
 function Dashboard() {
   const { user, logout } = useContext(AuthContext);
@@ -70,14 +72,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page">
-      <header className="dashboard-header">
-        <h1>ThoughtStream Dashboard</h1>
-        <div className="user-info">
-          <span>Welcome, {user?.name}!</span>
-          <button onClick={logout}>Logout</button>
-        </div>
-      </header>
-
+      <Header />
       <main className="dashboard-main">
         <section id="text-entry">
           <form onSubmit={handleSubmit} className="entry-form">
@@ -157,5 +152,7 @@ function Dashboard() {
     </div>
   );
 }
+
+
 
 export default Dashboard;

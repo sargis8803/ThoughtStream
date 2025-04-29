@@ -12,7 +12,7 @@ import { openWeatherData } from "./weatherController.js";
 export const getAllEntries = async (req, res) => {
   try {
       const { search, tag, location } = req.query;
-      let filter = {user: req.user._id};//updated here
+      let filter = {user: req.user.userId};//updated here
       // Search filter (Matches title or content)
       if (search) {
           filter.$or = [
@@ -51,7 +51,7 @@ export const getEntryById = async (req, res) => {
       if (!entry) {
           return res.status(404).json({ message: "Diary entry not found" });
       }
-      if(entry.user.toString() !== req.user._id.toString()){
+      if(entry.user.toString() !== req.user.userId.toString()){
         return res.status(403).json({message: "Forbidden"});
       }
       res.status(200).json(entry);
@@ -63,6 +63,7 @@ export const getEntryById = async (req, res) => {
 
 export const createEntry = async (req, res) => {
   try {
+
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -120,7 +121,7 @@ export const updateEntry = async (req, res) => {
       if (!entry){
         return res.status(404).json({ message: "No entry" });
       } 
-      if(entry.user.toString() !== req.user._id.toString()){
+      if(entry.user.toString() !== req.user.userId){
         return res.status(403).json({message: "Forbidden"});
       }
       //after checking for the existence of the entry, updating req.body values here:
@@ -162,13 +163,12 @@ export const updateEntry = async (req, res) => {
 
    export const deleteEntry = async (req, res) => {
     try{
-      const entry = await DiaryEntry.findByIdAndDelete(req.params.id);
-  
+      const entry = await DiaryEntry.findByIdAndDelete(req.params.id);//might need to change when entry deletion occurs
       if(!entry){
         return res.status(404).json({ message: "No entry (404)" });
       }
 
-      if(entry.user.toString() !== req.user._id.toString()){
+      if(entry.user.toString() !== req.user.userId){
         return res.status(403).json({message: "Forbidden"});
       }
   
