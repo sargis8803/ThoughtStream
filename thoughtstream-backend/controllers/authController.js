@@ -96,7 +96,7 @@ export const handleGoogleLogin = async (req, res) => {
          * The frontend will store this token in localStorage and send it with every API request
          */
         res.json({
-            token,
+            jwt,
             user: { name, email, picture }
         });
     } catch (err) {
