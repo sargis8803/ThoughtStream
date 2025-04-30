@@ -1,4 +1,3 @@
-// src/components/DiaryEntryCard.jsx
 import React from 'react';
 
 function DiaryEntryCard({ entry }) {
