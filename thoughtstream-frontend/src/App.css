@@ -8,15 +8,31 @@ body{
 }
 
  
-
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #6667AB;
   color: white;
-  padding: 1rem 2rem;
+  padding: 0.05rem 1.5rem;
+}
 
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-left h1 {
+  margin-right: 10px; /* Space between title and weather widget */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info button {
+  margin-left: 10px; /* Space between user name and logout button */
 }
 
 .dashboard-main{
@@ -90,3 +106,20 @@ button:active {
   transform: scale(0.98); /* press effect */
 }
 
+.weather-widget h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: #F8F8FF; /* light color to match dark background */
+}
+
+.weather-widget p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+  color: #F0F0F0; /* lighter than #555 for visibility */
+}
+
+.weather-widget img {
+  margin-top: 0.5rem;
+  width: 60px;
+  height: 60px;
+}
