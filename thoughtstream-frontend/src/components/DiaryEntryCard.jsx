@@ -1,21 +1,18 @@
-import React from "react";
+import React from 'react';
 
-function DiaryEntryCard({title, content, timestamp, weather}){
-    return(
-        <div className="DEC">
-            <h2 className="title">{title}</h2>
-            <p className="timeStamp">
-                {new Date(timestamp).toLocaleString()}
-            </p>
-            <p className="content">{content}</p>
-            {weather &&(
-                <div className="weatherInfo">
-                    <p>Current Weather: {weather.description}</p> 
-                    {weather.temp && <p>Temperature: {weather.temo}</p>}
-                </div>
-            )}
-        </div>
-    );
+function DiaryEntryCard({ entry }) {
+  const { title, content, createdAt, weather } = entry;
+  const formattedDate = new Date(createdAt).toLocaleString();
+
+  return (
+    <div className="diary-entry-card">
+      <h3>{title}</h3>
+      <p>{content}</p>
+      {weather && <p><strong>Weather:</strong> {weather}</p>}
+      <p><small>Created on: {formattedDate}</small></p>
+    </div>
+  );
 }
 
 export default DiaryEntryCard;
+
