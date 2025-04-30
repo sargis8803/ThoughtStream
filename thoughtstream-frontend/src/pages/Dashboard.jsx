@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import DiaryList from "../components/DiaryList";
 import Header from "../components/Header";
-import WeatherWidget from "../components/WeatherWidget";
+
 
 function Dashboard() {
   const { user, logout } = useContext(AuthContext);
@@ -126,8 +126,6 @@ function Dashboard() {
                 className="title-input"
               />
             </div>
-
-            <WeatherWidget setLocation={setLocation} /> 
 
             <button type="submit" className="submit-button">
               Save Entry
