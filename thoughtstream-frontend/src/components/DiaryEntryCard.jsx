@@ -2,8 +2,6 @@ import React from 'react';
 
 function DiaryEntryCard({ entry }) {
   const { title, content, createdAt, weather } = entry;
-
-  // Format the creation timestamp
   const formattedDate = new Date(createdAt).toLocaleString();
 
   return (
