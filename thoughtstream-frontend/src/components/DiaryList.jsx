@@ -1,18 +1,20 @@
-import React from "react";
+// src/components/DiaryEntryCard.jsx
+import React from 'react';
 
-function DiaryList({ entries }) {
-  if (!entries.length) return <p>No diary entries yet.</p>;
+function DiaryEntryCard({ entry }) {
+  const { title, content, createdAt, weather } = entry;
+
+  // Format the creation timestamp
+  const formattedDate = new Date(createdAt).toLocaleString();
 
   return (
-    <ul className="diaryList">
-      {entries.map((entry, index) => (
-        <li key={index} className="entry">
-          <h3>{entry.title}</h3>
-          <p>{entry.content}</p>
-        </li>
-      ))}
-    </ul>
+    <div className="diary-entry-card">
+      <h3>{title}</h3>
+      <p>{content}</p>
+      {weather && <p><strong>Weather:</strong> {weather}</p>}
+      <p><small>Created on: {formattedDate}</small></p>
+    </div>
   );
 }
 
-export default DiaryList;
+export default DiaryEntryCard;
