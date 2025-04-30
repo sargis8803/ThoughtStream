@@ -134,7 +134,7 @@ function Dashboard() {
         </section>
 
         <section id="old-entries">
-          old entries list goes here
+         <DiaryList />
         </section>
       </main>
     </div>
