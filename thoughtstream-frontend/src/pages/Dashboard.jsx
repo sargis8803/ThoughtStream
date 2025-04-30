@@ -4,6 +4,8 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import DiaryList from "../components/DiaryList";
 import Header from "../components/Header";
+import WeatherWidget from "../components/WeatherWidget";
+
 
 function Dashboard() {
   const { user, logout } = useContext(AuthContext);
@@ -13,6 +15,7 @@ function Dashboard() {
   const [reflection, setReflection] = useState("");
   const [tags, setTags] = useState("");
   const [location, setLocation] = useState("");
+  const [latestWeather, setLatestWeather] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,6 +57,8 @@ function Dashboard() {
   
       const data = await response.json();
       console.log("Entry saved:", data);
+
+      setLatestWeather(data.weather);
   
       // Reset form
       setTitle("");
@@ -138,6 +143,10 @@ function Dashboard() {
                 className="title-input"
               />
             </div>
+
+            {latestWeather && (
+              <WeatherWidget city={location} weatherData={latestWeather} />
+            )}
 
             <button type="submit" className="submit-button">
               Save Entry

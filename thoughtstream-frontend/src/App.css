@@ -90,3 +90,20 @@ button:active {
   transform: scale(0.98); /* press effect */
 }
 
+.weather-widget h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.weather-widget p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.weather-widget img {
+  margin-top: 0.5rem;
+  width: 60px;
+  height: 60px;
+}
