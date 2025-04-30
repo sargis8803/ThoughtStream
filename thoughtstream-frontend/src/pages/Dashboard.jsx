@@ -1,11 +1,8 @@
-// src/pages/Dashboard.jsx
-
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import DiaryList from "../components/DiaryList";
 import Header from "../components/Header";
 import WeatherWidget from "../components/WeatherWidget";
-
 
 function Dashboard() {
   const { user, logout } = useContext(AuthContext);
@@ -14,18 +11,18 @@ function Dashboard() {
   const [entry, setEntry] = useState("");
   const [reflection, setReflection] = useState("");
   const [tags, setTags] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("");  // Location state
   const [latestWeather, setLatestWeather] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const token = localStorage.getItem('jwt');
     if (!token) {
       alert('Please login again');
       return;
     }
-  
+
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/diary`, {
         method: "POST",
@@ -38,35 +35,34 @@ function Dashboard() {
           content: entry,
           reflection,
           tags: tags.split(",").map(tag => tag.trim()),
-          location
-          // user comes from token
+          location 
         })
       });
-  
+
       if (response.status === 403) {
         localStorage.removeItem('jwt');
         localStorage.removeItem('user');
         alert('Session expired. Please login again.');
         return;
       }
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to save entry');
       }
-  
+
       const data = await response.json();
       console.log("Entry saved:", data);
 
       setLatestWeather(data.weather);
-  
+
       // Reset form
       setTitle("");
       setEntry("");
       setReflection("");
       setTags("");
-      setLocation("");
-  
+      setLocation("");  // Reset location after form submission
+
     } catch (error) {
       console.error("Submission error:", error);
       alert(error.message.includes('token') 
@@ -81,7 +77,6 @@ function Dashboard() {
       <main className="dashboard-main">
         <section id="text-entry">
           <form onSubmit={handleSubmit} className="entry-form">
-
             <div className="form-group">
               <label htmlFor="entryTitle"></label>
               <input
@@ -132,21 +127,7 @@ function Dashboard() {
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="location"></label>
-              <input
-                id="location"
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Location"
-                className="title-input"
-              />
-            </div>
-
-            {latestWeather && (
-              <WeatherWidget city={location} weatherData={latestWeather} />
-            )}
+            <WeatherWidget setLocation={setLocation} /> 
 
             <button type="submit" className="submit-button">
               Save Entry
@@ -161,7 +142,5 @@ function Dashboard() {
     </div>
   );
 }
-
-
 
 export default Dashboard;
