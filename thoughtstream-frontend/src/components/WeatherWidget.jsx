@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function WeatherWidget({ setLocation }) {  
+  // State to hold weather data
   const [weatherData, setWeatherData] = useState(null);
   const [city, setCity] = useState(null);
   const [error, setError] = useState(null);
@@ -25,7 +26,7 @@ function WeatherWidget({ setLocation }) {
 
           // Pass the location back to the Dashboard
           if (setLocation) {
-            setLocation(fullLocation);  // Set location in parent component (Dashboard)
+            setLocation(fullLocation);  // Set location in Dashboard
             console.log("Location set in WeatherWidget:", fullLocation); // Log the location
           }
 
@@ -38,6 +39,7 @@ function WeatherWidget({ setLocation }) {
             }
           });
 
+          // If API call successful, save relevant weather data
           if (weatherRes.status === 200) {
             const data = weatherRes.data;
             setWeatherData({
@@ -62,14 +64,16 @@ function WeatherWidget({ setLocation }) {
     fetchCityAndWeather();
   }, [setLocation]);  // Only call this effect once when the component mounts
 
+  // Show error if there's one
   if (error) {
     return <div className="weather-widget">Error: {error}</div>;
   }
 
+  // Don't render anything until weather data is available
   if (!weatherData) return null;
 
   const { condition, temperature, location } = weatherData;
-  const iconUrl = getWeatherIconUrl(condition);
+  const iconUrl = getWeatherIconUrl(condition); // Get icon URL based on condition
 
   return (
     <div className="weather-widget">
@@ -81,6 +85,7 @@ function WeatherWidget({ setLocation }) {
   );
 }
 
+// Helper function to return a weather icon URL based on condition keywords
 function getWeatherIconUrl(condition) {
   const conditionLower = condition.toLowerCase();
   if (conditionLower.includes("cloud")) return "https://openweathermap.org/img/wn/03d.png";
