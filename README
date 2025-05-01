@@ -1,0 +1,37 @@
+Thought Stream by Sargis Petrosyan and Carlos Martinez
+
+General setup instructions:
+
+In the run environment make sure to have all relevant React packages installed and also jwt, vite, react-router-dom, 
+and node package manager. 
+
+Once dependencies are in order, running the project involves running two separate terminals concurrently:
+
+First terminal: cd into directory that contains the backend (thoughtstream-backend) and spin up the server 
+with "npm run dev" (npm start, if that is set up in you package json)
+
+Second terminal: cd into the directory that contains the frontend (thoughtstream-frontend) and run vite for the frontend 
+by inputting "npm run dev"
+
+Once both terminals are running, the run enviornment is ready. 
+
+The following screenshots show the general user flow for accessing the web-app
+Login > Authenticate > Dashboard > Input Entries:
+
+(SCREEN SHOTS IN ROOT DIRECTORY OF PROJECT)
+
+
+Components Hierarchy:
+
+DiaryEntryCard: Basic schema/design of diary entries made by users, diaryList holds instances of these
+
+DiaryList: On the right side of the dashboard is a scrollable list of previous diary entries made by the user, 
+each entry is an instance of DiaryEntryCard, can be deleted and/or updated
+
+Header: The header of the UI in the dashboard, incudes name of web-app, logout, and weather data
+
+PriavteRoute: Checks authentication status of user thoughout the session, if users are not logged in then they are redirected to login
+
+WeatherWidget: Gets user's current location, then fetches weather data based on current location. Data is used for both diary entry and header widget.
+
+NewEntryForm: Handles the form submission, new entries are saved into database once inputted by user
