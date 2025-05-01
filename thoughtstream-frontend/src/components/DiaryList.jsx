@@ -8,32 +8,32 @@ function DiaryList() {
   useEffect(() => {
     const fetchEntries = async () => {
       const token = localStorage.getItem("jwt");
-      console.log(token);
+      console.log("JWT Token:", token);
       if (!token) {
         setError("Please log in to view your entries.");
         return;
       }
-
+    
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/diary`, {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`
-          }
+            "Authorization": `Bearer ${token}`,
+          },
         });
-
+    
         if (!response.ok) {
           throw new Error("Failed to fetch entries.");
         }
-
+    
         const data = await response.json();
         console.log("Raw backend response:", data);
-
-        // SAFEGUARD: Make sure data is a non-null object
-        if (data && typeof data === "object" && Array.isArray(data.entries)) {
-          setEntries(data.entries);
+    
+        // If the response is an array 
+        if (Array.isArray(data)) {
+          setEntries(data); // Set directly if it's an array
         } else {
-          setEntries([]);
+          setEntries([]); // Handle case where no entries are returned
         }
       } catch (err) {
         setError(err.message);

@@ -27,10 +27,7 @@ connectDB();
  * Executed in the order it is declared.
  */
 app.use(express.json()); // Parses JSON request bodies
-app.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true,
-}));
+app.use(cors());
 
 
 

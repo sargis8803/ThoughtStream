@@ -11,9 +11,12 @@ import { openWeatherData } from "./weatherController.js";
  */
 export const getAllEntries = async (req, res) => {
   try {
+      console.log("Authenticated user ID:", req.user.userId);
       const { search, tag, location } = req.query;
       let filter = {user: req.user.userId};//updated here
       // Search filter (Matches title or content)
+
+      console.log("Filter:", filter);
       if (search) {
           filter.$or = [
               { title: { $regex: search, $options: "i" } },
