@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import DiaryList from "../components/DiaryList";
 import Header from "../components/Header";
-
 
 function Dashboard() {
   const { user, logout } = useContext(AuthContext);
@@ -11,11 +10,35 @@ function Dashboard() {
   const [entry, setEntry] = useState("");
   const [reflection, setReflection] = useState("");
   const [tags, setTags] = useState("");
-  const [location, setLocation] = useState("");  // Location state
-  const [latestWeather, setLatestWeather] = useState(null);
+  const [location, setLocation] = useState("");  // Location state   
+
+  // Call WeatherWidget's location functionality directly here
+  useEffect(() => {
+    // You can use the same logic that was inside WeatherWidget to get location data
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            // Here you could get more location details if needed or just pass lat/lon
+            setLocation(`${lat}, ${lon}`); // Set location with lat and lon or full address
+          },
+          (error) => {
+            console.error("Error getting location: ", error);
+            setLocation("Location not available");
+          }
+        );
+      }
+    };
+
+    getLocation();  // Trigger location fetching on mount
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("Location on submit:", location);
 
     const token = localStorage.getItem('jwt');
     if (!token) {
@@ -54,8 +77,6 @@ function Dashboard() {
       const data = await response.json();
       console.log("Entry saved:", data);
 
-      setLatestWeather(data.weather);
-
       // Reset form
       setTitle("");
       setEntry("");
@@ -73,7 +94,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page">
-      <Header />
+      <Header setLocation={setLocation} />
       <main className="dashboard-main">
         <section id="text-entry">
           <form onSubmit={handleSubmit} className="entry-form">
@@ -126,7 +147,7 @@ function Dashboard() {
                 className="title-input"
               />
             </div>
-
+            
             <button type="submit" className="submit-button">
               Save Entry
             </button>

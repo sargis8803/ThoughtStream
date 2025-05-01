@@ -27,9 +27,7 @@ connectDB();
  * Executed in the order it is declared.
  */
 app.use(express.json()); // Parses JSON request bodies
-app.use(cors()); // Allows cross-origin requests (for frontend interaction)
-// Parses cookies attached to incoming requests.
-// Required by express-session to read the session ID from the cookie.
+app.use(cors());
 
 
 

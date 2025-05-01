@@ -14,7 +14,7 @@ function WeatherWidget({ setLocation }) {
           const lat = pos.coords.latitude;
           const lon = pos.coords.longitude;
 
-          // Step 2: get city name 
+          // Step 2: Get city name from coordinates
           const locationRes = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
           const locationData = await locationRes.json();
           const cityName = locationData.address.city || locationData.address.town || locationData.address.village;
@@ -23,10 +23,13 @@ function WeatherWidget({ setLocation }) {
 
           setCity(cityName); // Set the city state
 
-          // Pass the location back to the  Dashboard
-          if (setLocation) setLocation(fullLocation);  
+          // Pass the location back to the Dashboard
+          if (setLocation) {
+            setLocation(fullLocation);  // Set location in parent component (Dashboard)
+            console.log("Location set in WeatherWidget:", fullLocation); // Log the location
+          }
 
-          // Step 3: Use axios to call OpenWeather API directly
+          // Step 3: Fetch weather data using OpenWeather API
           const weatherRes = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
             params: {
               q: fullLocation,
@@ -57,7 +60,7 @@ function WeatherWidget({ setLocation }) {
     };
 
     fetchCityAndWeather();
-  }, [setLocation]);  // Use setLocation 
+  }, [setLocation]);  // Only call this effect once when the component mounts
 
   if (error) {
     return <div className="weather-widget">Error: {error}</div>;

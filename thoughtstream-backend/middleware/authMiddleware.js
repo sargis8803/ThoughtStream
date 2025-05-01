@@ -20,6 +20,8 @@ import jwt from "jsonwebtoken";
 const authenticateJWT = (req, res, next) => {
 // Read the Authorization header (format: "Bearer <token>")
 const authHeader = req.headers.authorization;
+
+console.log("Authorization header:", authHeader);
 // Check if the token is present and properly formatted
 if (!authHeader || !authHeader.startsWith("Bearer ")) {
 return res.status(401).json({ message: "Authorization token missing or malformed" });
@@ -35,6 +37,7 @@ try {
 * - If verification succeeds, the payload is returned and we can extract the user info.
 */
 const decoded = jwt.verify(token, process.env.JWT_SECRET);
+console.log("Decoded token:", decoded);
 /**
 * 🧾 Step 3: Attach the decoded user ID to the request object
 *
@@ -43,6 +46,8 @@ const decoded = jwt.verify(token, process.env.JWT_SECRET);
 * DiaryEntry.find({ userId: req.user.userId })
 */
 req.user = { userId: decoded.userId };
+console.log("Authenticated user ID:", req.user.userId);
+
 // Allow the request to proceed to the route handler
 next();
 } catch (err) {

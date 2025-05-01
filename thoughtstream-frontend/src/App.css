@@ -1,20 +1,29 @@
-body{
+/* Base reset and typography */
+body {
   margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
 }
 
 #root {
-  
   text-align: center;
 }
 
- 
+/* Header styling */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #6667AB;
   color: white;
-  padding: 0.05rem 1.5rem;
+  padding: 0.5rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header h1 {
+  font-size: 1.75rem;
+  margin: 0;
 }
 
 .header-left {
@@ -23,7 +32,7 @@ body{
 }
 
 .header-left h1 {
-  margin-right: 10px; /* Space between title and weather widget */
+  margin-right: 20px;
 }
 
 .user-info {
@@ -32,98 +41,112 @@ body{
 }
 
 .user-info button {
-  margin-left: 10px; /* Space between user name and logout button */
-}
-
-.dashboard-main{
-  display: grid;
-  grid-template-areas: 
-  "text-entry old-entries";
-  grid-template-columns: 1fr 1fr;
-  height: calc(100vh - 120px);
-}
-
-#text-entry {
-  grid-area: text-entry;
-  background-color: aqua;
-  padding: 1rem;
-  height: 100%;
-}
-
-#old-entries {
-  grid-area: old-entries;
-  background-color: lightgray;
-  padding: 1rem;
-  height: 100%;
-}
-
-input, textarea {
-  width: 95%;
-  padding: 5px;
-  font-size: 16px;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  line-height: 1.5;
-  margin-bottom: 20px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  transition: all 0.3s ease;
-}
-
-input:focus, textarea:focus {
-  outline: none;             /* Removes default browser outline */
-  border-color: #4a90e2;     /* Blue border when focused */
-  background-color: #fff;    /* White background when focused */
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2); /* Blue glow */
-}
-
-textarea {
-  min-height: 20px;   /* Minimum height */
-  resize: vertical;    /* Allows vertical resizing only */
-  line-height: 1.6;    /* More breathing room between lines */
-}
-
-input {
-  height: 50px;  /* Fixed height for title input */
-}
-
-button {
-  padding: 12px 20px;
-  font-size: 16px;
-  background: #4285f4; 
-  color: white;
+  margin-left: 12px;
+  padding: 8px 16px;
+  background: #ff5e5e;
+  font-size: 0.95rem;
+  border-radius: 4px;
   border: none;
-  border-radius: 6px;
+  color: white;
   cursor: pointer;
   transition: background 0.2s;
 }
 
+.user-info button:hover {
+  background: #e04b4b;
+}
+
+/* Main layout */
+.dashboard-main {
+  display: grid;
+  grid-template-areas: "text-entry old-entries";
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 80px);
+}
+
+#text-entry, #old-entries {
+  background-color: #f0f4ff;
+  padding: 1.5rem;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border-left: 1px solid #d0d8f0;
+}
+
+#text-entry {
+  grid-area: text-entry;
+  border-left: none;
+}
+
+#old-entries {
+  grid-area: old-entries;
+}
+
+/* Input styling */
+input, textarea {
+  width: 95%;
+  padding: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, textarea:focus {
+  border-color: #6667AB;
+  box-shadow: 0 0 0 3px rgba(102, 103, 171, 0.2);
+  background-color: #fff;
+}
+
+textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+/* Button styling */
+button {
+  padding: 10px 18px;
+  font-size: 1rem;
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
 button:hover {
-  background: #3367d6; 
+  background: #3367d6;
 }
 
 button:active {
-  transform: scale(0.98); /* press effect */
+  transform: scale(0.98);
 }
 
+/* Weather widget */
 .weather-widget h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.25rem;
-  color: #F8F8FF; /* light color to match dark background */
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+  color: #f0f0f0;
 }
 
 .weather-widget p {
-  margin: 0.25rem 0;
-  font-size: 1rem;
-  color: #F0F0F0; /* lighter than #555 for visibility */
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+  color: #f5f5f5;
 }
 
 .weather-widget img {
-  margin-top: 0.5rem;
-  width: 60px;
-  height: 60px;
+  margin-top: 0.25rem;
+  width: 50px;
+  height: 50px;
 }
 
+
+/* Diary entry cards */
 .diary-entry-card {
   background-color: white;
   border-radius: 12px;
@@ -132,7 +155,6 @@ button:active {
   text-align: left;
   transition: transform 0.2s ease;
 }
-
 
 .diary-entry-card h3 {
   margin-top: 0;
@@ -149,4 +171,5 @@ button:active {
   line-height: 1.6;
   color: #444;
 }
+
 
