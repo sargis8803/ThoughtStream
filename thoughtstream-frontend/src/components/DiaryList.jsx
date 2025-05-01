@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import DiaryEntryCard from "./DiaryEntryCard";
 
-function DiaryList() {
-  const [entries, localEntry] = useState([]);
-  const [error, entryErr] = useState(null);
+function DiaryList({ newEntry }) {
+  const [entries, setEntries] = useState([]);
+  const [error, setError] = useState(null);
+  const [editingEntryId, setEditingEntryId] = useState(null);
+  const [editForm, setEditForm] = useState({ title: "", content: "" });
 
   useEffect(() => {
     const fetchEntries = async () => {
       const token = localStorage.getItem("jwt");
       if (!token) {
-        entryErr("Please log in to view your entries.");
+        setError("Please log in to view your entries.");
         return;
       }
+
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/diary`, {
           method: "GET",
@@ -19,45 +22,90 @@ function DiaryList() {
             "Authorization": `Bearer ${token}`,
           },
         });
-        if(!response.ok) {
+
+        if (!response.ok) {
           throw new Error("Couldn't get entries.");
         }
-    
+
         const data = await response.json();
         if (Array.isArray(data)) {
-          localEntry(data);
+          setEntries(data);
         } else {
-          localEntry([]);
+          setEntries([]);
         }
       } catch (err) {
-        entryErr(err.message);
+        setError(err.message);
       }
     };
 
     fetchEntries();
   }, []);
 
-//deletion should be very similar process to making a get request, both in routing and checking for auth status, 
-  const EntryDeletion = async (id) => {//passing the actual id here to find in DB after req
-    const JWT = localStorage.getItem("jwt");
-    if(!JWT){
-      entryErr("You need to be logged in to update/delete an old entry.");
+  useEffect(() => {
+    if (newEntry) {
+      setEntries((prev) => [newEntry, ...prev]);
+    }
+  }, [newEntry]);
+
+  const startEditing = (entry) => {
+    setEditingEntryId(entry._id);
+    setEditForm({ title: entry.title, content: entry.content });
+  };
+
+  const cancelEditing = () => {
+    setEditingEntryId(null);
+    setEditForm({ title: "", content: "" });
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const submitEdit = async (id) => {
+    const token = localStorage.getItem("jwt");
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/diary/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(editForm),
+    });
+
+    if (response.ok) {
+      const updated = await response.json();
+      setEntries((prev) =>
+        prev.map((entry) => (entry._id === id ? updated : entry))
+      );
+      cancelEditing();
+    } else {
+      alert("Update failed.");
+    }
+  };
+
+  const deleteEntry = async (id) => {
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      setError("You need to be logged in to delete an entry.");
       return;
     }
-    try{
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/diary/${id}`,{//backend processing here
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/diary/${id}`, {
         method: "DELETE",
         headers: {
-          "Authorization": `Bearer ${JWT}`,
+          "Authorization": `Bearer ${token}`,
         },
       });
-      if(!response.ok){
-        throw new Error("Entry deletion failed.");//thrown error of status isnt 200+
+
+      if (!response.ok) {
+        throw new Error("Entry deletion failed.");
       }
 
-      localEntry((oldEntryState) => oldEntryState.filter((entry) => entry._id !== id));
+      setEntries((prev) => prev.filter((entry) => entry._id !== id));
     } catch (err) {
-      entryErr(err.message);
+      setError(err.message);
     }
   };
 
@@ -67,13 +115,34 @@ function DiaryList() {
   return (
     <ul className="diaryList">
       {entries.map((entry) => (
-        <li key={entry._id || entry.id}>
-          <DiaryEntryCard entry={entry} />
-          <button 
-            onClick={() => EntryDeletion(entry._id || entry.id)} 
-            className="deleteButton">
-            Delete
-          </button>
+        <li key={entry._id}>
+          {editingEntryId === entry._id ? (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                submitEdit(entry._id);
+              }}
+            >
+              <input
+                name="title"
+                value={editForm.title}
+                onChange={handleEditChange}
+              />
+              <textarea
+                name="content"
+                value={editForm.content}
+                onChange={handleEditChange}
+              />
+              <button type="submit">Save</button>
+              <button type="button" onClick={cancelEditing}>Cancel</button>
+            </form>
+          ) : (
+            <>
+              <DiaryEntryCard entry={entry} />
+              <button onClick={() => startEditing(entry)}>Edit</button>
+              <button onClick={() => deleteEntry(entry._id)}>Delete</button>
+            </>
+          )}
         </li>
       ))}
     </ul>
