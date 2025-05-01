@@ -46,6 +46,10 @@ body {
   background: #ff5e5e;
   font-size: 0.95rem;
   border-radius: 4px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .user-info button:hover {
@@ -57,11 +61,11 @@ body {
   display: grid;
   grid-template-areas: "text-entry old-entries";
   grid-template-columns: 1fr 1fr;
-  height: calc(100vh - 80px); /* adjusted to match smaller header */
+  height: calc(100vh - 80px);
 }
 
 #text-entry, #old-entries {
-  background-color: #f0f4ff; /* soft, clean light blue */
+  background-color: #f0f4ff;
   padding: 1.5rem;
   height: 100%;
   overflow-y: auto;
@@ -71,7 +75,7 @@ body {
 
 #text-entry {
   grid-area: text-entry;
-  border-left: none; /* only old-entries gets the left divider */
+  border-left: none;
 }
 
 #old-entries {
@@ -140,4 +144,31 @@ button:active {
   width: 50px;
   height: 50px;
 }
+
+/* Diary entry cards */
+.diary-entry-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: left;
+  transition: transform 0.2s ease;
+}
+
+.diary-entry-card h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.diary-entry-card .entry-meta {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.diary-entry-card .entry-content {
+  line-height: 1.6;
+  color: #444;
+}
+
 
