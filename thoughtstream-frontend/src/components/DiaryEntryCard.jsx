@@ -25,3 +25,5 @@ function DiaryEntryCard({ entry }) {
 }
 
 export default DiaryEntryCard;
+
+
