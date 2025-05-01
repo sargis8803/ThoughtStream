@@ -32,16 +32,14 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page">
-      {/* Header component (can update location if needed) */}
       <Header setLocation={setLocation} />
       <main className="dashboard-main">
         <section id="text-entry">
-          {/* New diary entry form */}
           <NewEntryForm location={location} setNewEntry={setNewEntry} />
         </section>
 
         <section id="old-entries">
-          {/* Display list of diary entries */}
+          {/* display list of diary entries */}
           <DiaryList newEntry={newEntry} />
         </section>
       </main>

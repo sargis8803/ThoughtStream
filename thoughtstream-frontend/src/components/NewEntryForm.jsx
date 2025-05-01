@@ -18,7 +18,7 @@ function NewEntryForm({ location, setNewEntry }) {
     }
 
     try {
-         // Send form data to the backend API
+            // Send form data to the backend API
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/diary`, {
         method: "POST",
         headers: {
@@ -34,7 +34,7 @@ function NewEntryForm({ location, setNewEntry }) {
         }),
       });
 
-      // If token is expired or invalid
+      //If token is expired or invalid
       if (response.status === 403) {
         localStorage.removeItem("jwt");
         localStorage.removeItem("user");
@@ -42,7 +42,7 @@ function NewEntryForm({ location, setNewEntry }) {
         return;
       }
 
-       // Handle other API errors
+       //handle other API errors
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to save entry");
@@ -51,7 +51,7 @@ function NewEntryForm({ location, setNewEntry }) {
       const data = await response.json();
       setNewEntry(data); // Inform Dashboard of new entry
 
-      // Clear the form
+        // Clear the form
       setTitle("");
       setEntry("");
       setReflection("");

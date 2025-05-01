@@ -11,7 +11,7 @@ function Header({ setLocation }) {
         <h1>Thought Stream</h1>
         <WeatherWidget setLocation={setLocation} />
       </div>
-      <div className="user-info">
+      <div className="uInfo">
         <span>Welcome, {user?.name}!</span>
         <button onClick={logout}>Logout</button>
       </div>
