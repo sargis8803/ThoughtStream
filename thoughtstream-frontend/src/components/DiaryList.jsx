@@ -23,6 +23,10 @@ function DiaryList({ newEntry }) {
           },
         });
 
+        if (!response.ok) {
+          throw new Error("Couldn't get entries.");
+        }
+
         const data = await response.json();
         if (Array.isArray(data)) {
           setEntries(data);
@@ -80,6 +84,31 @@ function DiaryList({ newEntry }) {
     }
   };
 
+  const deleteEntry = async (id) => {
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      setError("You need to be logged in to delete an entry.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/diary/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Entry deletion failed.");
+      }
+
+      setEntries((prev) => prev.filter((entry) => entry._id !== id));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   if (error) return <p>{error}</p>;
   if (!entries.length) return <p>No diary entries found.</p>;
 
@@ -111,6 +140,7 @@ function DiaryList({ newEntry }) {
             <>
               <DiaryEntryCard entry={entry} />
               <button onClick={() => startEditing(entry)}>Edit</button>
+              <button onClick={() => deleteEntry(entry._id)}>Delete</button>
             </>
           )}
         </li>
@@ -120,4 +150,3 @@ function DiaryList({ newEntry }) {
 }
 
 export default DiaryList;
-

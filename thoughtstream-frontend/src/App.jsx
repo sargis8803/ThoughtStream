@@ -8,7 +8,7 @@ import './App.css';;
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
   //const isAuthenticated = true //temp for debugging
-  console.log("Is Authenticated?", isAuthenticated);
+  //console.log("Is Authenticated?", isAuthenticated);
 
   return (
     <Routes>
