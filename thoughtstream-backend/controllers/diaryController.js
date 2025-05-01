@@ -78,7 +78,8 @@ export const createEntry = async (req, res) => {
 
     console.log("Decoded token:", decoded);
 
-    const userId = decoded._id; 
+    const userId = decoded.userId;
+
 
     const { title, content, reflection, tags, location } = req.body;
     console.log("Request Body:", req.body);

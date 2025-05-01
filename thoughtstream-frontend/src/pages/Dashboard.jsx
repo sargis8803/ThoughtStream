@@ -11,6 +11,8 @@ function Dashboard() {
   const [reflection, setReflection] = useState("");
   const [tags, setTags] = useState("");
   const [location, setLocation] = useState("");  // Location state   
+  const [newEntry, setNewEntry] = useState(null);
+
 
   // Call WeatherWidget's location functionality directly here
   useEffect(() => {
@@ -77,12 +79,14 @@ function Dashboard() {
       const data = await response.json();
       console.log("Entry saved:", data);
 
+      setNewEntry(data); // Pass the saved entry
+
       // Reset form
       setTitle("");
       setEntry("");
       setReflection("");
       setTags("");
-      setLocation("");  // Reset location after form submission
+      
 
     } catch (error) {
       console.error("Submission error:", error);
@@ -155,7 +159,7 @@ function Dashboard() {
         </section>
 
         <section id="old-entries">
-         <DiaryList />
+        <DiaryList newEntry={newEntry} />
         </section>
       </main>
     </div>
