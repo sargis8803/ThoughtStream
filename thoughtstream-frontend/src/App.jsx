@@ -6,8 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import './App.css';;
 
 function App() {
-  const { isAuthenticated } = useContext(AuthContext);
-  //const isAuthenticated = true //temp for debugging
+  //const { isAuthenticated } = useContext(AuthContext);
+  const isAuthenticated = true //temp for debugging
   console.log("Is Authenticated?", isAuthenticated);
 
   return (
